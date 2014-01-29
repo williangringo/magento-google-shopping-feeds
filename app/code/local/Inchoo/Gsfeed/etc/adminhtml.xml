@@ -3,10 +3,10 @@
     <menu>
         <catalog>
             <children>
-                <inchoo_gsfeed translate="title" module="inchoo_gsfeed">
+                <inchoo_gsfeed>
                     <title>Google Shopping Feed</title>
                     <sort_order>200</sort_order>
-                    <action>inchoo_gsfeed/adminhtml_gsfeed</action>
+                    <action>adminhtml/inchoo_gsfeed</action>
                 </inchoo_gsfeed>
             </children>
         </catalog>

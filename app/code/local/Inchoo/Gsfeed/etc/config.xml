@@ -39,5 +39,25 @@
                 </entities>
             </gsfeed_resource>
         </models>
+
+        <!-- block -->
+        <blocks>
+            <inchoo_gsfeed>
+                <class>Inchoo_Gsfeed_Block</class>
+            </inchoo_gsfeed>
+        </blocks>
     </global>
+
+    <!-- admin router -->
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Inchoo_Gsfeed before="Mage_Adminhtml">Inchoo_Gsfeed_Adminhtml</Inchoo_Gsfeed>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 </config>
