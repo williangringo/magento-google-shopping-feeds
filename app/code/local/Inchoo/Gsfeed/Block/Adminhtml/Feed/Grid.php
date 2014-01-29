@@ -61,11 +61,6 @@ class Inchoo_Gsfeed_Block_Adminhtml_Feed_Grid extends
                     'caption' => Mage::helper('inchoo_gsfeed')->__('Generate'),
                     'field' => 'id',
                 ),
-                array(
-                    'url' => array('base' => '*/*/delete'),
-                    'caption' => Mage::helper('inchoo_gsfeed')->__('Delete'),
-                    'field' => 'id',
-                ),
             )
         ));
 

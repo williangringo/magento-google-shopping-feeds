@@ -9,12 +9,27 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
 
         return $this;
     }
+
     public function indexAction()
     {
         $this->_initAction()
             ->_addContent($this->getLayout()
                 ->createBlock('inchoo_gsfeed/adminhtml_feed'))
             ->renderLayout();
+    }
+
+    public function editAction()
+    {
+        $this->_initAction()
+            ->_addLeft($this->getLayout()
+                ->createBlock('inchoo_gsfeed/adminhtml_tabs'))
+            ->renderLayout();
+    }
+
+    public function categoriesAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
     }
 
     public function gridAction()

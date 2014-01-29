@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_inchoo_gsfeed_categories>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="inchoo_gsfeed/adminhtml_tabs_categories" name="categories"/>
+        </block>
+    </adminhtml_inchoo_gsfeed_categories>
+</layout>
