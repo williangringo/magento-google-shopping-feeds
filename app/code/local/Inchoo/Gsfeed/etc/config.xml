@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config>
+    <!-- Module version -->
+    <modules>
+        <Inchoo_Gsfeed>
+            <version>0.1.0</version>
+        </Inchoo_Gsfeed>
+    </modules>
+
+    <global>
+        <!-- module setup -->
+        <resources>
+            <inchoo_gsfeed_setup>
+                <setup>
+                    <module>Inchoo_Gsfeed</module>
+                    <class>Inchoo_Gsfeed_Model_Resource_Setup</class>
+                </setup>
+            </inchoo_gsfeed_setup>
+        </resources>
+
+        <!-- helpers -->
+        <helpers>
+            <inchoo_gsfeed>
+                <class>Inchoo_Gsfeed_Helper</class>
+            </inchoo_gsfeed>
+        </helpers>
+        <!-- models and tables -->
+        <models>
+            <feeds>
+                <class>Inchoo_Gsfeed_Model</class>
+                <resourceModel>gsfeed_resource</resourceModel>
+            </feeds>
+            <gsfeed_resource>
+                <class>Inchoo_Gsfeed_Model_Resource</class>
+                <entities>
+                    <gfeeds>
+                        <table>inchoo_gsfeeds</table>
+                    </gfeeds>
+                </entities>
+            </gsfeed_resource>
+        </models>
+    </global>
+</config>
