@@ -21,8 +21,10 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
     public function editAction()
     {
         $this->_initAction()
-            ->_addLeft($this->getLayout()
-                ->createBlock('inchoo_gsfeed/adminhtml_tabs'))
+            ->_addContent($this->getLayout()
+                ->createBlock('inchoo_gsfeed/adminhtml_config'))
+//            ->_addLeft($this->getLayout()
+//                ->createBlock('inchoo_gsfeed/adminhtml_config_edit_tabs'))
             ->renderLayout();
     }
 

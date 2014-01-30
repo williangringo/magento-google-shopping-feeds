@@ -1,6 +1,6 @@
 <?php
 
-class Inchoo_Gsfeed_Block_Adminhtml_Tabs_Config_Edit_Form extends
+class Inchoo_Gsfeed_Block_Adminhtml_Config_Edit_Form extends
     Mage_Adminhtml_Block_Widget_Form
 {
     protected function _prepareForm()
@@ -9,7 +9,7 @@ class Inchoo_Gsfeed_Block_Adminhtml_Tabs_Config_Edit_Form extends
             'id' => 'edit_form',
             'action' => $this->getUrl('*/*/configure', array('id' => $this->getRequest()->getParam('id'))),
             'method' => 'post',
-            'enctype' => 'multipart/form-data'
+            'enctype' => 'multipart/form-data',
         ));
 
         $form->setUseContainer(true);

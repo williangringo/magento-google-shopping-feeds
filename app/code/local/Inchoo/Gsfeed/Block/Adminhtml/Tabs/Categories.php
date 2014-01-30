@@ -5,9 +5,7 @@ class Inchoo_Gsfeed_Block_Adminhtml_Tabs_Categories extends
 {
     public function __construct()
     {
-        var_dump('test');
         parent::__construct();
         $this->setTemplate('inchoo/gsfeed/categories.phtml');
-        $this->setUseAjax(true);
     }
 }
