@@ -16,7 +16,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
 
         /** populate general fields */
         $xml = new Inchoo_Gsfeed_Model_Extendedxml();
-        $xml->openURI(Mage::getBaseDir() . '/feed.xml');
+        $xml->openURI(Mage::getBaseDir() . '/' . $feed->getLink());
         $xml->setIndent(true);
 
         $xml->startDocument('1.0', 'utf-8');
@@ -49,19 +49,28 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
             $cat = Mage::getModel('catalog/category')->load($catId);
             $product = Mage::getModel('catalog/product');
 
-            foreach ($cat->getProductCollection() as $curProduct) {
-                $product->load($curProduct->getID());
-                $catIds = $product->getCategoryids();
-                $catParent = Mage::getModel('catalog/category')->load($catIds[0])->getName();
-                if (isset($catIds[1])) {
-                    $catChild = Mage::getModel('catalog/category')->load($catIds[1])->getName();
-                }
-                $xml->startElement('item');
+            $collection = $cat->getProductCollection()->addAttributeToSelect('*')
+                ->addFieldToFilter('status',Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
+            Mage::getSingleton('cataloginventory/stock')
+                ->addInStockFilterToCollection($collection);
 
+            foreach ($collection as $curProduct) {
+                $product->load($curProduct->getID());
+
+                $catIds = $product->getCategoryids();
+                $catParent = Mage::getModel('catalog/category')->load($catIds[1])->getName();
+                if (isset($catIds[2])) {
+                    $catChild = Mage::getModel('catalog/category')->load($catIds[2])->getName();
+                }
+
+                $xml->startElement('item');
                 $xml->addChild('g:id', $product->getId());
                 $xml->addChild('title', $product->getName());
                 $xml->addChild('link', $product->getProductUrl());
-                $xml->addChild('g:price', $product->getFinalPrice());
+                $xml->startElement('g:price');
+                    $xml->writeAttribute('unit', 'GBP');
+                    $xml->writeCdata($product->getFinalPrice()); // gbp
+                    $xml->endElement();
                 $xml->addChild('g:online_only', 'y');
                 $xml->addChild('description', $product->getDescription());
                 $xml->addChild('g:condition', 'new');
@@ -75,11 +84,11 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                 $xml->addChild('g:availability', 'in stock');
                 // quantity
                 $xml->addChild('g:featured_product', 'no');
-                // color
-                // gender
+                $xml->addChild('g:color', $product->getRapidColor());// color
+                $xml->addChild('g:gender', ($catIds[0] == 3) ? 'female' : 'male');// gender
                 $xml->addChild('g:age_group', 'adult');
                 // size -- S/M/L/XL/XXL
-                $xml->addChild('g:shipping_weight', '0.00 kilograms');
+                $xml->addChild('g:shipping_weight', '0.00 kg');
                 $xml->addChild('g:manufacturer', $product->getAttributeText('manufacturer'));
                 $xml->addChild('g:brand', $product->getAttributeText('manufacturer'));
                 $xml->addChild('g:mpn', $product->getSku());// mpn
