@@ -12,10 +12,12 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
 
     public function indexAction()
     {
-        $this->_initAction()
-            ->_addContent($this->getLayout()
-                ->createBlock('inchoo_gsfeed/adminhtml_feed'))
-            ->renderLayout();
+//        $this->_initAction()
+//            ->_addContent($this->getLayout()
+//                ->createBlock('inchoo_gsfeed/adminhtml_feed'))
+//            ->renderLayout();
+//        $this->getResponse()->setHeader('Content-type', 'text/xml', true);
+        Mage::getModel('feeds/gfeeds')->generateXML(1);
     }
 
     public function editAction()
@@ -23,8 +25,8 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
         $this->_initAction()
             ->_addContent($this->getLayout()
                 ->createBlock('inchoo_gsfeed/adminhtml_config'))
-//            ->_addLeft($this->getLayout()
-//                ->createBlock('inchoo_gsfeed/adminhtml_config_edit_tabs'))
+            ->_addLeft($this->getLayout()
+                ->createBlock('inchoo_gsfeed/adminhtml_config_edit_tabs'))
             ->renderLayout();
     }
 
@@ -39,6 +41,6 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
         $this->getResponse()->setBody(
             $this->getLayout()->createBlock(
                 'inchoo_gsfeed/adminhtml_feed_grid')->toHtml()
-            );
+        );
     }
 }
