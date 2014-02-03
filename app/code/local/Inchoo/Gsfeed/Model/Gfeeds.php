@@ -75,7 +75,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                 }
 
                 $xml->startElement('item');
-                $xml->addChild('g:id', $product->getId());
+                $xml->addChild('g:id', $product->getSku());
                 $xml->addChild('title', $product->getName());
                 $xml->addChild('link', $product->getProductUrl());
                 $xml->startElement('g:price');
@@ -89,9 +89,18 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                 if (isset($catChild)) {
                     $xml->addChild('g:product_type', $catParent->getName() . ' > ' . $catChild->getName());
                 }
-                $xml->addChild('g:google_product_category', '');
+                $xml->addChild('g:google_product_category', $categoryMapping);
                 $xml->addChild('g:image_link', $product->getImageUrl());
-                // additional_image_link -- sve slike
+
+                // additional_image_link
+                $productMedia = $product->getMediaGallery();
+                foreach ($productMedia['images'] as $key => $image) {
+                    if ($key != 0) {
+                        $imgUrl = $product->getMediaConfig()->getMediaUrl($image['file']);
+                        $xml->addChild('g:additional_image_link', $imgUrl);
+                    }
+                }
+
                 $xml->addChild('g:availability', 'in stock');
                 $xml->addChild('g:quantity', $qty);
                 $xml->addChild('g:featured_product', 'no');
