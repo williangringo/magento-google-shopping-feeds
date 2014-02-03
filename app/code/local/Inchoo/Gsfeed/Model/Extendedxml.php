@@ -2,10 +2,15 @@
 
 class Inchoo_Gsfeed_Model_Extendedxml extends XMLWriter
 {
-    public function addChild($name, $value = null, $namespace = null)
+    protected function _construct()
+    {
+        $this->_init('feeds/extendedxml');
+    }
+
+    public function addChild($name, $value = null)
     {
         $this->startElement($name);
-        $this->writeCdata(htmlspecialchars($value, ENT_QUOTES | ENT_XML1));
+        $this->writeCdata($value);
         $this->endElement();
 
     }
