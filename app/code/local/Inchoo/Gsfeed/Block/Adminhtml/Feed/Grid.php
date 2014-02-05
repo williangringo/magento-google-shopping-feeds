@@ -18,7 +18,7 @@ class Inchoo_Gsfeed_Block_Adminhtml_Feed_Grid extends
     protected function _prepareCollection()
     {
         $collection = Mage::getModel('feeds/gfeeds')
-            ->getcollection();
+            ->getCollection();
         $this->setCollection($collection);
 
         parent::_prepareCollection();
@@ -38,6 +38,12 @@ class Inchoo_Gsfeed_Block_Adminhtml_Feed_Grid extends
         $this->addColumn('name', array(
             'header' => Mage::helper('inchoo_gsfeed')->__('Name'),
             'index' => 'name',
+        ));
+
+        $this->addColumn('link', array(
+            'header' => Mage::helper('inchoo_gsfeed')->__('Feed link'),
+            'index' => 'link',
+            'renderer' => 'Inchoo_Gsfeed_Block_Adminhtml_Feed_Link',
         ));
 
         $this->addColumn('updated', array(
