@@ -138,7 +138,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
 
                     /** get minimal price */
                     $finalPrice = $product->getFinalPrice();
-                    $frontPrice = $product->getFrontFinalPrice();
+                    $frontPrice = $curProduct->getFrontFinalPrice();
                     if ($finalPrice > $frontPrice && $frontPrice != null) {
                         $finalPrice = $frontPrice;
                     }
