@@ -10,6 +10,9 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
         return $this;
     }
 
+    /**
+     * Inital grid listing
+     */
     public function indexAction()
     {
         $this->_initAction()
@@ -18,6 +21,9 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
             ->renderLayout();
     }
 
+    /**
+     * Generate single feed
+     */
     public function rebuildAction()
     {
         $id = $this->getRequest()->getParam('id');
@@ -29,34 +35,44 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
         $this->_redirect('*/*/index');
     }
 
-    public function generateAction()
-    {
-        Mage::getModel('feeds/gfeeds')->generateAll();
-
-        $this->_redirect('*/*/index');
-    }
-
+    /**
+     * New/Edit feed
+     */
     public function editAction()
     {
-        $this->_initAction()
-            ->_addContent($this->getLayout()
+
+        $this->_initAction();
+        $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
+
+        $this->_addContent($this->getLayout()
                 ->createBlock('inchoo_gsfeed/adminhtml_config'))
             ->_addLeft($this->getLayout()
                 ->createBlock('inchoo_gsfeed/adminhtml_config_edit_tabs'))
             ->renderLayout();
     }
 
+    /**
+     * Category listing
+     */
     public function categoriesAction()
     {
         $this->loadLayout();
         $this->renderLayout();
     }
 
+    /**
+     * Return grid - used for ajax
+     */
     public function gridAction()
     {
         $this->getResponse()->setBody(
             $this->getLayout()->createBlock(
                 'inchoo_gsfeed/adminhtml_feed_grid')->toHtml()
         );
+    }
+
+    public function saveAction()
+    {
+        var_dump($_POST);
     }
 }

@@ -48,16 +48,6 @@
         </blocks>
     </global>
 
-    <adminhtml>
-        <layout>
-            <updates>
-                <gsfeed>
-                    <file>inchoo_gsfeed.xml</file>
-                </gsfeed>
-            </updates>
-        </layout>
-    </adminhtml>
-
     <admin>
         <!-- admin router -->
         <routers>

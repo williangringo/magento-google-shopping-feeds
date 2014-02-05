@@ -9,15 +9,12 @@ class Inchoo_Gsfeed_Block_Adminhtml_Config extends
 
         $this->_objectId = 'id';
         $this->_blockGroup = 'inchoo_gsfeed';
-        $this->_controller = 'adminhtml_tabs_config';
+        $this->_controller = 'adminhtml_config';
         $this->_mode = 'edit';
-
-        $this->_updateButton('save', 'label', Mage::helper('inchoo_tickets')->__('Save settings'));
-        $this->removeButton('reset');
     }
 
     public function getHeaderText()
     {
-        return Mage::helper('inchoo_gsfeed')->__('Google Shopping Feed details');
+        return Mage::helper('inchoo_gsfeed')->__('Google shopping feed settings');
     }
 }

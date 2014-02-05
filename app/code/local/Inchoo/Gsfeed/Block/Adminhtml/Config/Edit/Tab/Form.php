@@ -8,7 +8,6 @@ class Inchoo_Gsfeed_Block_Adminhtml_Config_Edit_Tab_Form extends
         $form = new Varien_Data_Form();
         $this->setForm($form);
 
-
         $fieldset = $form->addFieldset('gsfeed_form', array(
             'legend' => Mage::helper('inchoo_gsfeed')->__('Configure Google Shopping Feed')
         ));
@@ -19,29 +18,28 @@ class Inchoo_Gsfeed_Block_Adminhtml_Config_Edit_Tab_Form extends
             'required' => true,
             'name' => 'name'
         ));
-//
-//        $fieldset->addField('link', 'text', array(
-//            'label' => Mage::helper('inchoo_gsfeed')->__('Feed link'),
-//            'class' => 'required-entry',
-//            'required' => true,
-//            'name' => 'link'
-//        ));
-//
-//        $fieldset->addField('title', 'text', array(
-//            'label' => Mage::helper('inchoo_gsfeed')->__('Feed title'),
-//            'class' => 'required-entry',
-//            'required' => true,
-//            'name' => 'title'
-//        ));
-//
-//        $fieldset->addField('description', 'textarea', array(
-//            'label' => Mage::helper('inchoo_gsfeed')->__('Feed decription'),
-//            'class' => 'required-entry',
-//            'required' => true,
-//            'name' => 'description'
-//        ));
+
+        $fieldset->addField('link', 'text', array(
+            'label' => Mage::helper('inchoo_gsfeed')->__('Feed link'),
+            'class' => 'required-entry',
+            'required' => true,
+            'name' => 'link'
+        ));
+
+        $fieldset->addField('title', 'text', array(
+            'label' => Mage::helper('inchoo_gsfeed')->__('Feed title'),
+            'class' => 'required-entry',
+            'required' => true,
+            'name' => 'title'
+        ));
+
+        $fieldset->addField('description', 'textarea', array(
+            'label' => Mage::helper('inchoo_gsfeed')->__('Feed decription'),
+            'class' => 'required-entry',
+            'required' => true,
+            'name' => 'description'
+        ));
 
         return parent::_prepareForm();
-
     }
 }
