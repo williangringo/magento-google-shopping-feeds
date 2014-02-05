@@ -12,20 +12,28 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
 
     public function indexAction()
     {
-//        $this->_initAction()
-//            ->_addContent($this->getLayout()
-//                ->createBlock('inchoo_gsfeed/adminhtml_feed'))
-//            ->renderLayout();
-//        $this->getResponse()->setHeader('Content-type', 'text/xml', true);
+        $this->_initAction()
+            ->_addContent($this->getLayout()
+                ->createBlock('inchoo_gsfeed/adminhtml_feed'))
+            ->renderLayout();
+    }
 
-        $t_start = microtime(true);
-        $count = Mage::getModel('feeds/gfeeds')->generateXML(2);
+    public function rebuildAction()
+    {
+        $id = $this->getRequest()->getParam('id');
 
-        $t_end = microtime(true);
-        $time = ($t_end - $t_start) . ' sec';
-        $mem = (memory_get_peak_usage() / (1024 * 1024)) . ' MB';
+        if ($id) {
+            Mage::getModel('feeds/gfeeds')->generateXML($id);
+        }
 
-        print_r($count . ' products: ' . $time . '; using ' . $mem);
+        $this->_redirect('*/*/index');
+    }
+
+    public function generateAction()
+    {
+        Mage::getModel('feeds/gfeeds')->generateAll();
+
+        $this->_redirect('*/*/index');
     }
 
     public function editAction()

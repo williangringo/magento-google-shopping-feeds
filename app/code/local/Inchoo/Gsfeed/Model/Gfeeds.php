@@ -8,6 +8,14 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
         $this->_init('feeds/gfeeds');
     }
 
+    public function generateAll()
+    {
+        $feeds = $this->getCollection();
+        foreach ($feeds as $feed) {
+            $this->generateXML($feed->getId());
+        }
+    }
+
     /**
      * @param $feedId int
      * @return int Number of searched item
@@ -16,6 +24,11 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
     {
         /** Fetch feed info */
         $feed = $this->load($feedId);
+
+        $feedUpdateDate = date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time()));
+        $feed->setLastUpdate($feedUpdateDate);
+        $feed->save();
+
         $categories = explode(',', $feed->getCategories());
 
         /** populate general fields */
@@ -33,14 +46,12 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
         $xml->writeElement('link', Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
         $xml->addCDChild('description', $feed->getDescription());
 
-        $count = $this->populateItems($xml, $categories);
+        $this->populateItems($xml, $categories);
 
         $xml->endElement(); // channel
         $xml->endElement(); // rss
         $xml->endDocument();
         $xml->flush();
-
-        return $count;
     }
 
     /**
@@ -52,7 +63,6 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
      */
     public function populateItems($xml, $categories)
     {
-        $count = 0;
         $_usedIds = array();
 
         foreach ($categories as $parentCategoryId) {
@@ -88,8 +98,6 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
 
                 $storeId = ($curCategory->getParentId() == 3) ? 2 : 1;
                 foreach ($collection as $curProduct) {
-                    $count ++;
-
                     /** Fix for placeholder image */
                     Mage::app()->setCurrentStore($storeId);
 
@@ -203,7 +211,5 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                 }
             }
         }
-
-        return $count;
     }
 }

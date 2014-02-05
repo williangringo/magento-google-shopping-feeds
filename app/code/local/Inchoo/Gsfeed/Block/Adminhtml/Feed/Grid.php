@@ -57,7 +57,7 @@ class Inchoo_Gsfeed_Block_Adminhtml_Feed_Grid extends
                     'field' => 'id',
                 ),
                 array(
-                    'url' => array('base' => '*/*/generate'),
+                    'url' => array('base' => '*/*/rebuild'),
                     'caption' => Mage::helper('inchoo_gsfeed')->__('Generate'),
                     'field' => 'id',
                 ),
