@@ -17,7 +17,15 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
 //                ->createBlock('inchoo_gsfeed/adminhtml_feed'))
 //            ->renderLayout();
 //        $this->getResponse()->setHeader('Content-type', 'text/xml', true);
-        Mage::getModel('feeds/gfeeds')->generateXML(1);
+
+        $t_start = microtime(true);
+        $count = Mage::getModel('feeds/gfeeds')->generateXML(2);
+
+        $t_end = microtime(true);
+        $time = ($t_end - $t_start) . ' sec';
+        $mem = (memory_get_peak_usage() / (1024 * 1024)) . ' MB';
+
+        print_r($count . ' products: ' . $time . '; using ' . $mem);
     }
 
     public function editAction()
