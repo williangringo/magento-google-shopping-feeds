@@ -11,6 +11,8 @@ class Inchoo_Gsfeed_Block_Adminhtml_Config extends
         $this->_blockGroup = 'inchoo_gsfeed';
         $this->_controller = 'adminhtml_config';
         $this->_mode = 'edit';
+
+        $this->removeButton('reset');
     }
 
     public function getHeaderText()

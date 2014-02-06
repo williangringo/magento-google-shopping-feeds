@@ -40,6 +40,19 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
      */
     public function editAction()
     {
+        $feedId = $this->getRequest()->getParam('id', null);
+        $feed = Mage::getModel('feeds/gfeeds');
+
+        if ($feedId != null) {
+            $feed->load($feedId);
+
+            if ($feed->getId() == false)  {
+                Mage::getSingleton('adminhtml/session')->addError(
+                    Mage::helper('awesome')->__('Feed does not exist'));
+                $this->_redirect('*/*/');
+            }
+        }
+        Mage::register('feed_data', $feed);
 
         $this->_initAction();
         $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
@@ -71,8 +84,40 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
         );
     }
 
+    public function categoriesJsonAction()
+    {
+        $this->getResponse()->setBody('');
+    }
+
     public function saveAction()
     {
-        var_dump($_POST);
+        $feed = Mage::getModel('feeds/gfeeds')->load(
+            $this->getRequest()->getParam('id')
+        );
+
+        if ($feed->getId()) {
+            $data = array(
+                'name' => $this->getRequest()->getParam('name'),
+                'title' => $this->getRequest()->getParam('title'),
+                'link' => $this->getRequest()->getParam('link'),
+                'description' => $this->getRequest()->getParam('description'),
+                'categories' => implode(',', array_unique(
+                    explode(',', $this->getRequest()->getParam('category_ids')))),
+            );
+            $feed->setData($data);
+            $feed->save();
+        }
+
+        $this->_redirect('*/*/edit', array('_current' => true));
+    }
+
+    public function deleteAction()
+    {
+        $feed = Mage::getModel('feeds/gfeeds')->load(
+            $this->getRequest()->getParam('id')
+        );
+        $feed->delete();
+
+        $this->_redirect('*/*/index');
     }
 }

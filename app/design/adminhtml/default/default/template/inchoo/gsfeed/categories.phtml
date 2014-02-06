@@ -1,6 +1,6 @@
 <div class="entry-edit">
     <div class="entry-edit-head">
-        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('inchoo_gsfeed')->__('Google shopping feed categories') ?></h4>
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('inchoo_gsfeed')->__('Included categories') ?></h4>
     </div>
     <fieldset id="grop_fields">
         <input type="hidden" name="category_ids" id="product_categories" value="<?php echo $this->getIdsString() ?>">
@@ -68,31 +68,27 @@
             bildCategoryTree(root, <?php echo $this->getTreeJson() ?>);
             tree.addListener('click', categoryClick.createDelegate(this));
 
-            // render the tree
             tree.render();
             root.expand();
-            //tree.expandAll();
         });
 
-        function bildCategoryTree(parent, config){
+        function bildCategoryTree(parent, config) {
             if (!config) return null;
 
             if (parent && config && config.length){
                 for (var i = 0; i < config.length; i++){
-                    config[i].uiProvider = Ext.tree.CheckboxNodeUI;
-                    var node;
-                    var _node = Object.clone(config[i]);
-                    if (_node.children && !_node.children.length) {
-                        delete(_node.children);
-                        node = new Ext.tree.AsyncTreeNode(_node);
-
-                    } else {
-                        node = new Ext.tree.TreeNode(config[i]);
+                    if (parent.id != 1) {
+                        config[i].uiProvider = Ext.tree.CheckboxNodeUI;
                     }
-                    parent.appendChild(node);
-                    node.loader = node.getOwnerTree().loader;
-                    if(config[i].children){
-                        bildCategoryTree(node, config[i].children);
+                    var node;
+
+                    node = new Ext.tree.TreeNode(config[i]);
+                    if(node.attributes.cls != 'folder no-active-category') {
+                        parent.appendChild(node);
+                        node.loader = node.getOwnerTree().loader;
+                        if(config[i].children){
+                            bildCategoryTree(node, config[i].children);
+                        }
                     }
                 }
             }
