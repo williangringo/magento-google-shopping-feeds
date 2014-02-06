@@ -14,14 +14,14 @@ class Inchoo_Gsfeed_Block_Adminhtml_Config_Edit_Tabs extends
     protected function _beforeToHtml()
     {
         $this->addTab('form_section', array(
-            'label' => Mage::helper('inchoo_gsfeed')->__('Feed Information'),
-            'title' => Mage::helper('inchoo_gsfeed')->__('Feed Information'),
+            'label' => Mage::helper('inchoo_gsfeed')->__('Details'),
+            'title' => Mage::helper('inchoo_gsfeed')->__('Details'),
             'content' => $this->getLayout()->createBlock('inchoo_gsfeed/adminhtml_config_edit_tab_form')->toHtml()
         ));
 
         $this->addTab('form_section2', array(
-            'label' => Mage::helper('inchoo_gsfeed')->__('Feed Categories'),
-            'title' => Mage::helper('inchoo_gsfeed')->__('Feed Categories'),
+            'label' => Mage::helper('inchoo_gsfeed')->__('Categories'),
+            'title' => Mage::helper('inchoo_gsfeed')->__('Categories'),
             'content' => $this->getLayout()
                 ->createBlock('inchoo_gsfeed/adminhtml_config_edit_categories')
                 ->toHtml()

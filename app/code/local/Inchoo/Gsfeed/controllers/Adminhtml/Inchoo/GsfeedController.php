@@ -97,6 +97,7 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
 
         if ($feed->getId()) {
             $data = array(
+                'feed_id' => $this->getRequest()->getParam('id'),
                 'name' => $this->getRequest()->getParam('name'),
                 'title' => $this->getRequest()->getParam('title'),
                 'link' => $this->getRequest()->getParam('link'),
