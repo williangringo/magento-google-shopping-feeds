@@ -25,6 +25,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
         /** Fetch feed info */
         $feed = $this->load($feedId);
 
+        /** Update DB entry */
         $feedUpdateDate = date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time()));
         $feed->setLastUpdate($feedUpdateDate);
         $feed->save();
@@ -66,6 +67,11 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
         $_usedIds = array();
 
         foreach ($categories as $parentCategoryId) {
+
+            /** In case category string started with ',' instead of id */
+            if ($parentCategory = '') {
+                continue;
+            }
 
             $parentCategory = Mage::getModel('catalog/category')
                 ->load($parentCategoryId);
@@ -148,7 +154,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                     $xml->writeElement('g:id', $product->getSku());
                     $xml->addHEChild('title', $product->getName());
 
-                    // link
+                    /** link */
                     $xml->startElement('link');
                         $xml->writeAttribute('rel', 'alternate');
                         $xml->writeAttribute('type', 'text/html');
@@ -158,7 +164,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                             $product->getData('url_key') . '.html');
                     $xml->endElement();
 
-                    // price
+                    /** price */
                     $xml->startElement('g:price');
                         $xml->writeAttribute('unit', 'GBP');
                         $xml->text(number_format($finalPrice, 2));
@@ -172,7 +178,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                     $xml->addHEChild('g:google_product_category', $googleMap);
                     $xml->writeElement('g:image_link', $product->getImageUrl());
 
-                    // additional_image_link
+                    /** additional_image_link */
                     $productMedia = $product->getMediaGallery();
                     foreach ($productMedia['images'] as $key => $image) {
                         if ($key != 0) {
@@ -188,7 +194,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                     $xml->writeElement('g:gender', ($catIds[0] == 3) ? 'female' : 'male');// gender
                     $xml->writeElement('g:age_group', 'adult');
 
-                    // size
+                    /** size */
                     $productAttributeOptions = $product->getTypeInstance(true)
                         ->getConfigurableAttributesAsArray($product);
                     $attributeOptions = array();
@@ -206,7 +212,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                     $xml->writeElement('g:shipping_weight', '0.00 kg');
                     $xml->addCDChild('g:manufacturer', $product->getAttributeText('manufacturer'));
                     $xml->addCDChild('g:brand', $product->getAttributeText('manufacturer'));
-                    $xml->writeElement('g:mpn', $product->getSku());// mpn
+                    $xml->writeElement('g:mpn', $product->getSku());
                     $xml->endElement(); // item
                 }
             }

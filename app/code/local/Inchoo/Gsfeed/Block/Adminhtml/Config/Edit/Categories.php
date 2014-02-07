@@ -6,24 +6,42 @@ class Inchoo_Gsfeed_Block_Adminhtml_Config_Edit_Categories extends
     protected $_categoryIds;
     protected $_selectedNodes = null;
 
+    /**
+     * Set file template
+     */
     public function __construct() {
         parent::__construct();
         $this->setTemplate('inchoo/test/categories.phtml');
     }
 
+    /**
+     * @return array Array of selected category ids
+     */
     protected function getCategoryIds() {
         return explode(',',Mage::registry('feed_data')->getCategories());
-        return array();
     }
 
+    /**
+     * @return bool
+     */
     public function isReadonly() {
         return false;
     }
 
+    /**
+     * @return string Convert cateogry ids array to string
+     */
     public function getIdsString() {
         return implode(',', $this->getCategoryIds());
     }
 
+    /**
+     * Return root tree node
+     *
+     * @param null $parentNodeCategory
+     * @param int $recursionLevel
+     * @return mixed|Varien_Data_Tree_Node
+     */
     public function getRoot($parentNodeCategory = null, $recursionLevel = 3)
     {
         if (!is_null($parentNodeCategory) && $parentNodeCategory->getId()) {

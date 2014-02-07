@@ -36,7 +36,15 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
     }
 
     /**
-     * New/Edit feed
+     * New feed
+     */
+    public function newAction()
+    {
+        $this->_forward('edit');
+    }
+
+    /**
+     * Edit feed
      */
     public function editAction()
     {
@@ -84,34 +92,38 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
         );
     }
 
-    public function categoriesJsonAction()
-    {
-        $this->getResponse()->setBody('');
-    }
-
+    /**
+     * Save changes/new feed
+     */
     public function saveAction()
     {
-        $feed = Mage::getModel('feeds/gfeeds')->load(
-            $this->getRequest()->getParam('id')
-        );
+        $feed = Mage::getModel('feeds/gfeeds');
+        $id = $this->getRequest()->getParam('id');
 
-        if ($feed->getId()) {
-            $data = array(
-                'feed_id' => $this->getRequest()->getParam('id'),
-                'name' => $this->getRequest()->getParam('name'),
-                'title' => $this->getRequest()->getParam('title'),
-                'link' => $this->getRequest()->getParam('link'),
-                'description' => $this->getRequest()->getParam('description'),
-                'categories' => implode(',', array_unique(
-                    explode(',', $this->getRequest()->getParam('category_ids')))),
-            );
-            $feed->setData($data);
-            $feed->save();
+        if ($id) {
+            $feed->load($id);
         }
 
-        $this->_redirect('*/*/edit', array('_current' => true));
+        $data = array(
+            'name' => $this->getRequest()->getParam('name'),
+            'title' => $this->getRequest()->getParam('title'),
+            'link' => $this->getRequest()->getParam('link'),
+            'description' => $this->getRequest()->getParam('description'),
+            'categories' => implode(',', array_unique(
+                explode(',', $this->getRequest()->getParam('category_ids')))),
+        );
+        if ($id) {
+            $data['feed_id'] = $id;
+        }
+        $feed->setData($data);
+        $feed->save();
+
+        $this->_redirect('*/*/index', array('_current' => true));
     }
 
+    /**
+     * Delete existing feed
+     */
     public function deleteAction()
     {
         $feed = Mage::getModel('feeds/gfeeds')->load(
