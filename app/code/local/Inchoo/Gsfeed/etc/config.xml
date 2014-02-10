@@ -48,6 +48,20 @@
         </blocks>
     </global>
 
+    <!-- cron jobs -->
+    <crontab>
+        <jobs>
+            <gsfeed_generate_all>
+                <schedule>
+                    <cron_expr>* 1 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>feeds/observer::generate</model>
+                </run>
+            </gsfeed_generate_all>
+        </jobs>
+    </crontab>
+
     <admin>
         <!-- admin router -->
         <routers>

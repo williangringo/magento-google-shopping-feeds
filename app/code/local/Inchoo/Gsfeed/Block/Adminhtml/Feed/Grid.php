@@ -49,6 +49,14 @@ class Inchoo_Gsfeed_Block_Adminhtml_Feed_Grid extends
         $this->addColumn('updated', array(
             'header' => Mage::helper('inchoo_gsfeed')->__('Last updated'),
             'index' => 'last_update',
+            'width' => '200px',
+        ));
+
+        $this->addColumn('enabled', array(
+            'header' => Mage::helper('inchoo_gsfeed')->__('Status'),
+            'index' => 'enabled',
+            'renderer' => 'Inchoo_Gsfeed_Block_Adminhtml_Feed_Status',
+            'width' => '100px',
         ));
 
         $this->addColumn('action', array(
@@ -56,6 +64,7 @@ class Inchoo_Gsfeed_Block_Adminhtml_Feed_Grid extends
             'width' => '70px',
             'type' => 'action',
             'getter' => 'getId',
+            'sortable' => false,
             'actions' => array(
                 array(
                     'url' => array('base' => '*/*/edit'),
@@ -67,7 +76,8 @@ class Inchoo_Gsfeed_Block_Adminhtml_Feed_Grid extends
                     'caption' => Mage::helper('inchoo_gsfeed')->__('Generate'),
                     'field' => 'id',
                 ),
-            )
+            ),
+            'width' => '100px',
         ));
 
         return parent::_prepareColumns();

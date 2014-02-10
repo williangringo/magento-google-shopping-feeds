@@ -11,7 +11,7 @@ class Inchoo_Gsfeed_Block_Adminhtml_Config_Edit_Categories extends
      */
     public function __construct() {
         parent::__construct();
-        $this->setTemplate('inchoo/test/categories.phtml');
+        $this->setTemplate('inchoo/gsfeed/categories.phtml');
     }
 
     /**

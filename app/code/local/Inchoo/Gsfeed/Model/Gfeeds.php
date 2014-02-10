@@ -12,7 +12,12 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
     {
         $feeds = $this->getCollection();
         foreach ($feeds as $feed) {
-            $this->generateXML($feed->getId());
+            if ($feed->getEnabled() == 1) {
+                $this->generateXML($feed->getId());
+            } else {
+                $file = Mage::getBaseDir() . '/' . $feed->getLink();
+                unlink($file);
+            }
         }
     }
 
@@ -47,7 +52,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
         $xml->writeElement('link', Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
         $xml->addCDChild('description', $feed->getDescription());
 
-        $this->populateItems($xml, $categories);
+        $this->populateItems($xml, $categories, $feed->getStore());
 
         $xml->endElement(); // channel
         $xml->endElement(); // rss
@@ -62,7 +67,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
      * @param $categories array
      * @return int number of searched item
      */
-    public function populateItems($xml, $categories)
+    public function populateItems($xml, $categories, $store)
     {
         $_usedIds = array();
 
@@ -78,8 +83,8 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
             $childrenCategories = Mage::getModel('catalog/category')
                 ->getCategories($parentCategoryId);
 
-
-            if (empty($childrenCategories->getNodes())) {
+            $childNodes = $childrenCategories->getNodes();
+            if (empty($childNodes)) {
                 $childrenCategories[0] = $parentCategory;
                 $isParent = true;
             }
@@ -102,10 +107,9 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                     ->joinLeft('catalog_product_index_price AS cpip', 'cpip.entity_id=e.entity_id AND customer_group_id=0', array('front_final_price' => 'final_price'))
                     ->group(array('cpsl.parent_id'));
 
-                $storeId = ($curCategory->getParentId() == 3) ? 2 : 1;
                 foreach ($collection as $curProduct) {
                     /** Fix for placeholder image */
-                    Mage::app()->setCurrentStore($storeId);
+                    Mage::app()->setCurrentStore($store);
 
                     /** skip out of stock items */
                     $qty = $curProduct->getQty();
@@ -122,24 +126,22 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                     /** load categories */
                     $product->load($productId);
 
-                    $catIds = $product->getCategoryids();
-                    $rootCategory = Mage::getModel('catalog/category')
-                        ->load($catIds[0]);
-                    $productType = $rootCategory->getName() .
-                        ' > ' . $parentCategory->getName();
+                    $productType = $parentCategory->getName();
                     if (!isset($isParent)) {
                         $productType .= ' > ' . $category->getName();
                     }
 
                     /** get category mapping */
-                    $googleMap = $rootCategory->getGoogleShoppingMapping();
-                    $parentMap = $parentCategory->getGoogleShoppingMapping();
-                    if ($parentMap) {
-                        $googleMap .= ' > ' . $parentMap;
-                    }
-                    $currentMap = $curCategory->getGoogleShoppingMapping();
-                    if ($currentMap && !isset($isParent)) {
-                        $googleMap .= ' > ' . $currentMap;
+                    $googleMap = $parentCategory->getGoogleShoppingMapping();
+                    if (!isset($isParent)) {
+                        $currentMap = $curCategory->getGoogleShoppingMapping();
+                        if ($currentMap) {
+                            if ($googleMap) {
+                                $googleMap .= ' > ' . $currentMap;
+                            } else {
+                                $googleMap = $currentMap;
+                            }
+                        }
                     }
 
                     /** get minimal price */
@@ -159,8 +161,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                         $xml->writeAttribute('rel', 'alternate');
                         $xml->writeAttribute('type', 'text/html');
                         $xml->writeAttribute('href',
-                            Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) .
-                            (($catIds[0] == 3) ? 'women/' : 'mens/') .
+                            Mage::app()->getStore($store)->getBaseUrl() .
                             $product->getData('url_key') . '.html');
                     $xml->endElement();
 
@@ -191,7 +192,7 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                     $xml->writeElement('g:quantity', number_format($qty, 2));
                     $xml->writeElement('g:featured_product', 'no');
                     $xml->writeElement('g:color', $product->getRapidColour());// color
-                    $xml->writeElement('g:gender', ($catIds[0] == 3) ? 'female' : 'male');// gender
+                    $xml->writeElement('g:gender', ($store == 2) ? 'female' : 'male');// gender
                     $xml->writeElement('g:age_group', 'adult');
 
                     /** size */
@@ -209,7 +210,6 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                         $xml->writeElement('g:size', implode($attributeOptions['Size'], '&#47;'));
                     }
 
-                    $xml->writeElement('g:shipping_weight', '0.00 kg');
                     $xml->addCDChild('g:manufacturer', $product->getAttributeText('manufacturer'));
                     $xml->addCDChild('g:brand', $product->getAttributeText('manufacturer'));
                     $xml->writeElement('g:mpn', $product->getSku());

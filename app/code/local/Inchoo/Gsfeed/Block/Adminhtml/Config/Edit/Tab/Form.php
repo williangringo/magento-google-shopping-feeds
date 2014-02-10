@@ -26,6 +26,33 @@ class Inchoo_Gsfeed_Block_Adminhtml_Config_Edit_Tab_Form extends
             'name' => 'name'
         ));
 
+        $fieldset->addField('enabled', 'select', array(
+            'label' => Mage::helper('inchoo_gsfeed')->__('Enable feed'),
+            'class' => 'required-entry',
+            'required' => true,
+            'name' => 'enabled',
+            'values' => array(
+                0 => 'Disabled',
+                1 => 'Enabled',
+            )
+        ));
+
+        $stores = Mage::app()->getStores();
+        $selectData = array();
+        foreach ($stores as $store) {
+            $name = $store->getName();
+            if ($name != 'Default') {
+                $selectData[$store->getId()] = $store->getName();
+            }
+        }
+        $fieldset->addField('store', 'select', array(
+            'label' => Mage::helper('inchoo_gsfeed')->__('Feed store'),
+            'class' => 'required-entry',
+            'required' => true,
+            'name' => 'store',
+            'values' => $selectData,
+        ));
+
         $fieldset->addField('link', 'text', array(
             'label' => Mage::helper('inchoo_gsfeed')->__('Feed link'),
             'class' => 'required-entry',

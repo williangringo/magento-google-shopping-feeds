@@ -108,6 +108,8 @@ class Inchoo_Gsfeed_Adminhtml_Inchoo_GsfeedController extends Mage_Adminhtml_Con
             'name' => $this->getRequest()->getParam('name'),
             'title' => $this->getRequest()->getParam('title'),
             'link' => $this->getRequest()->getParam('link'),
+            'enabled' => $this->getRequest()->getParam('enabled'),
+            'store' => $this->getRequest()->getParam('store'),
             'description' => $this->getRequest()->getParam('description'),
             'categories' => implode(',', array_unique(
                 explode(',', $this->getRequest()->getParam('category_ids')))),
