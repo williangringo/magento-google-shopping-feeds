@@ -17,8 +17,10 @@ class Inchoo_Gsfeed_Model_Extendedxml extends XMLWriter
 
     public function addHEChild($name, $value = null)
     {
-        $value = htmlspecialchars($value, ENT_QUOTES | ENT_XML1);
-        $this->writeElement($name, $value);
+        $pars = str_replace('&', '&amp;', $value);
+        $pars = str_replace('>', '&gt;', $pars);
+        $pars = str_replace('<', '&lt;', $pars);
+        $this->writeElement($name, $pars);
     }
 
 }

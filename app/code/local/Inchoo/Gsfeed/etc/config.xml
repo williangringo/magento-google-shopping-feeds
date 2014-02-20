@@ -53,7 +53,7 @@
         <jobs>
             <gsfeed_generate_all>
                 <schedule>
-                    <cron_expr>* 1 * * *</cron_expr>
+                    <cron_expr>* 3 * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>feeds/observer::generate</model>
