@@ -205,13 +205,16 @@ class Inchoo_Gsfeed_Model_Gfeeds extends
                     $xml->writeElement('g:age_group', 'adult');
 
                     /** size */
-                    $productAttributeOptions = $product->getTypeInstance(true)
-                        ->getConfigurableAttributesAsArray($product);
-                    $attributeOptions = array();
-                    foreach($productAttributeOptions as $productAttribute) {
-                        foreach ($productAttribute['values'] as $attribute) {
-                            if ($attribute['store_label'] != '1Sze') {
-                                $attributeOptions[$productAttribute['label']][$attribute['value_index']] = $attribute['store_label'];
+                    if($product->isConfigurable())
+                    {
+                        $productAttributeOptions = $product->getTypeInstance(true)
+                            ->getConfigurableAttributesAsArray($product);
+                        $attributeOptions = array();
+                        foreach($productAttributeOptions as $productAttribute) {
+                            foreach ($productAttribute['values'] as $attribute) {
+                                if ($attribute['store_label'] != '1Sze') {
+                                    $attributeOptions[$productAttribute['label']][$attribute['value_index']] = $attribute['store_label'];
+                                }
                             }
                         }
                     }
